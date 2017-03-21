@@ -1,0 +1,89 @@
+{
+  "name": "flow-validator",
+  "version": "0.4.1",
+  "description": "object validation with flow types and more",
+  "main": "lib/index.js",
+  "files": [
+    "src",
+    "lib"
+  ],
+  "scripts": {
+    "eslint": "eslint src && eslint test",
+    "flow": "flow check src && flow check test",
+    "checkdeps": "nsp check",
+    "test": "mocha --recursive",
+    "test:file": "mocha",
+    "coverage": "nyc mocha",
+    "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
+    "codeclimate:coverage": "nyc npm test && nyc report --reporter=text-lcov | codeclimate-test-reporter",
+    "coverage:ci": "nyc npm test && nyc report --reporter=text-lcov | coveralls && nyc report --reporter=text-lcov | codeclimate-test-reporter",
+    "build": "rm -rf lib/* && babel src -d lib --source-maps && flow-copy-source -v src lib",
+    "doc:serve": "documentation serve src -g --document-exported -w -f html",
+    "doc:lint": "documentation lint src -g",
+    "doc:build": "rm -r doc/*; mv src/index.js src/index; documentation build src -g --document-exported -f html -o doc --sort-order alpha; mv src/index src/index.js",
+    "doc:publish": "./scripts/doc_build.sh && git push origin gh-pages:gh-pages",
+    "precommit": "npm run doc:lint && npm run eslint && npm run flow && npm run checkdeps && npm test && npm run coverage && npm run build && npm run build:min",
+    "prepublish": "npm run precommit",
+    "postpublish": "npm run doc:publish",
+    "test:todo": "cd test/todo; webpack-dev-server --entry ./index.js --module-bind \"js=babel-loader\""
+  },
+  "tags": [
+    "flux",
+    "redux",
+    "flow",
+    "flowtype",
+    "react",
+    "js",
+    "javascript"
+  ],
+  "keywords": [
+    "flux",
+    "redux",
+    "flow",
+    "flowtype",
+    "react",
+    "js",
+    "javascript"
+  ],
+  "author": "Frederik Batuna <gobi301@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/freddi301/algonawt.git"
+  },
+  "bugs": {
+    "url": "https://github.com/freddi301/algonawt/issues"
+  },
+  "homepage": "https://github.com/freddi301/algonawt#readme",
+  "devDependencies": {
+    "babel-cli": "6.23.0",
+    "babel-core": "^6.24.0",
+    "babel-eslint": "7.1.1",
+    "babel-loader": "^6.4.1",
+    "babel-plugin-transform-builtin-extend": "1.1.2",
+    "babel-plugin-transform-class-properties": "^6.23.0",
+    "babel-plugin-transform-flow-strip-types": "6.22.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.2.2",
+    "chai": "3.5.0",
+    "codeclimate-test-reporter": "0.4.1",
+    "coveralls": "2.12.0",
+    "documentation": "4.0.0-beta.18",
+    "eslint": "3.17.1",
+    "eslint-plugin-flowtype": "2.30.2",
+    "eslint-plugin-react": "^6.10.3",
+    "flow-bin": "0.41.0",
+    "flow-copy-source": "^1.1.0",
+    "husky": "^0.13.2",
+    "istanbul": "0.4.5",
+    "mocha": "3.2.0",
+    "nsp": "2.6.3",
+    "nyc": "10.1.2",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "uglify-js": "^2.8.5",
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.4.2"
+  },
+  "dependencies": {}
+}
