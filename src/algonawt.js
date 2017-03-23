@@ -1,5 +1,5 @@
 // @flow
-
+/*
 import React from 'react';
 import { Store } from './Store';
 import { shallowEqual } from './utils';
@@ -50,3 +50,4 @@ export function algonawt<
     }
   };
 }
+*/

@@ -17,11 +17,11 @@ export function machinery<
     return state;
   };
   const actions = Object.keys(struct).reduce((actions, actionName) => {
-    actions[actionName] = payload => ({ type: actionName, payload });
+    actions[actionName] = (payload: Payloads) => ({ type: actionName, payload });
     return actions;
   }, {});
   const events = Object.keys(struct).reduce((events, eventName) => {
-    events[eventName] = (state, payload) => reducer(state, { type: eventName, payload });
+    events[eventName] = (state: State, payload: Payloads) => reducer(state, { type: eventName, payload });
     return events;
   }, {});
   return { reducer, actions, events };

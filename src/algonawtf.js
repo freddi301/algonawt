@@ -1,5 +1,5 @@
 // @flow
-
+/*
 import React from 'react';
 import { Store } from './Store';
 import { shallowEqual } from './utils';
@@ -18,7 +18,10 @@ export function algonawtf<StoreState, Action: { type: string, payload: * }, Algo
     props: Props;
     store: Store<StoreState, Action>;
     storeState: AlgonawtState;
-    render() { return WrappedComponent(this.storeState); }
+    render() { // eslint-disable-next-line no-console
+      if (window.countRender) console.count(Algonawtf.displayName);
+      return WrappedComponent(this.storeState);
+    }
     updateState = state => {
       const nextProps = selector(state, this.props, this.store.publish);
       if (!compare(this.storeState, nextProps)) {
@@ -38,3 +41,4 @@ export function algonawtf<StoreState, Action: { type: string, payload: * }, Algo
     static displayName = `AlgonawtF(${WrappedComponent.displayName || WrappedComponent.name})`;
   };
 }
+*/

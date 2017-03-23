@@ -3,41 +3,49 @@
 import React from 'react'; // eslint-disable-line no-unused-vars
 import ReactDOM from 'react-dom';
 
-import { Store } from '../../src/Store';
-import { algonawtf } from '../../src/algonawtf';
+import { Algo } from '../../src';
 import { computed } from '../../src/computed';
-import { machinery } from '../../src/reducer';
 
-const mach = machinery({
+const algo = new Algo({
+  todos: ['a', 'b', 'c'],
+  counter: 0,
+}, {
   push: (state, item: string) => {
-    return { todos: state.todos.concat(item) };
+    return Object.assign({}, state, { todos: state.todos.concat(item) });
+  },
+  inc: (state) => {
+    return Object.assign({}, state, { counter: state.counter + 1 });
   }
 });
 
-const store = new Store(
-  {
-    todos: ['a', 'b', 'c']
-  },
-  mach.reducer
-);
+algo.store.attachReduxDevToolsChromeExtension();
 
-const Todos = algonawtf( //eslint-disable-line no-unused-vars
-  store,
-  computed({
-    todos: state => state.todos
-  }, props => ({
-    todos: props.todos,
-    push: e => store.publish(mach.actions.push(String(e.target.value)))
-  })),
-  ({ todos, push }) => <div>
+export const Todos = algo.nawt({
+  state: { text: '' },
+  countRender: true,
+  selector: computed({
+    todos: ({ store: { todos } }) => todos,
+    text: ({ state: { text } }) => text
+  }, ({ todos, text }) => {
+    return { todos, push: () => algo.actions.push(text) };
+  }),
+  component: ({ algo: { todos, push }, state: { text }, setState }) => <div>
     <ul>
       {todos.map(todo=><li key={todo}>{todo}</li>)}
     </ul>
-    <input type="text"/><input type="button" value="add" onClick={push}/>
+     <input type="text" value={text} onChange={(e: { target: { value: string }}) => setState({ text: String(e.target.value) })}/>
+    <input type="button" value="add" onClick={push}/>
   </div>
-);
+});
+
+const inc = () => algo.actions.inc();
+
+export const Publish = () => <button onClick={inc}>store.publish()</button>;
 
 ReactDOM.render(
-  <Todos></Todos>,
+  <div>
+    <Todos/>
+    <Publish/>
+  </div>,
   document.getElementById('root')
 );

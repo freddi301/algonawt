@@ -1,6 +1,6 @@
 {
   "name": "flow-validator",
-  "version": "0.4.1",
+  "version": "0.0.1",
   "description": "object validation with flow types and more",
   "main": "lib/index.js",
   "files": [
@@ -11,7 +11,7 @@
     "eslint": "eslint src && eslint test",
     "flow": "flow check src && flow check test",
     "checkdeps": "nsp check",
-    "test": "mocha --recursive",
+    "test": "mocha test/*.spec.js",
     "test:file": "mocha",
     "coverage": "nyc mocha",
     "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
@@ -25,7 +25,7 @@
     "precommit": "npm run doc:lint && npm run eslint && npm run flow && npm run checkdeps && npm test && npm run coverage && npm run build && npm run build:min",
     "prepublish": "npm run precommit",
     "postpublish": "npm run doc:publish",
-    "test:todo": "cd test/todo; webpack-dev-server --entry ./index.js --module-bind \"js=babel-loader\""
+    "test:todo": "cd test/todo; webpack-dev-server --entry ./index.js --module-bind \"js=babel-loader\" -d"
   },
   "tags": [
     "flux",

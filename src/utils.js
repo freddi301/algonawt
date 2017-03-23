@@ -2,9 +2,9 @@
 
 const hasOwnProperty = Object.prototype.hasOwnProperty;
 
-function is(x, y) {
-  if (x === y) { return isNaN(x); }
-  return x !== x && y !== y;
+function is(x, y): boolean {
+  if (x === y && !isNaN(x)) return true;
+  return false;
 }
 
 export function shallowEqual(objA: mixed, objB: mixed): boolean {
