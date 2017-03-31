@@ -1,6 +1,7 @@
 {
   "presets": [
     "react",
+    "latest",
     [
       "env",
       {
@@ -32,13 +33,14 @@
     [
       "transform-runtime",
       {
-        "helpers": false,
-        "polyfill": false,
+        "helpers": true,
+        "polyfill": true,
         "regenerator": true
       }
     ],
     "transform-flow-strip-types",
     "babel-plugin-transform-class-properties",
+    "transform-object-rest-spread",
     [
       "babel-plugin-transform-builtin-extend",
       {
