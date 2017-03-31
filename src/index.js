@@ -4,4 +4,6 @@ export { Store } from './Store';
 
 export { computed } from './computed';
 
-export { createReducer } from './Reducer';
+export { createReducer } from './reducer';
+
+export { functional, classy } from './component';

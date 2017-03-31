@@ -2,7 +2,7 @@
 
 import { expect } from 'chai';
 
-import { createReducer } from '../src/Reducer';
+import { createReducer } from '../src/reducer';
 
 const counter = createReducer({
   inc: s => n => s + n,
