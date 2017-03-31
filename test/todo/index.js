@@ -3,49 +3,42 @@
 import React from 'react'; // eslint-disable-line no-unused-vars
 import ReactDOM from 'react-dom';
 
-import { Algo } from '../../src';
-import { computed } from '../../src/computed';
+import { Store } from '../../src';
+import { createReducer } from '../../src';
 
-const algo = new Algo({
-  todos: ['a', 'b', 'c'],
+const store = new Store({
+  todos: [],
   counter: 0,
-}, {
-  push: (state, item: string) => {
-    return Object.assign({}, state, { todos: state.todos.concat(item) });
-  },
-  inc: (state) => {
-    return Object.assign({}, state, { counter: state.counter + 1 });
+}, createReducer({
+  add: s => todo => ({ ...s, todos: s.todos.concat(todo) }),
+  inc: s => n => ({ ...s, counter: s.counter + n })
+}));
+
+const inc = base => () => store.publish(r => r.inc(base));
+export const Counter = store.functional(({ counter }) =>
+  ({ base }) => <button onClick={inc(base)}>{counter}</button>
+);
+
+export const Todos = store.classy(class Todos extends React.Component {
+  state = { text: '' };
+  observedState: typeof store.reducer.state;
+  write = (e) => this.setState({ text: e.target.value });
+  add = () => store.publish(r => r.add(this.state.text));
+  render() {
+    return <div>
+      <ul>
+        {this.observedState.todos.map(todo => <li key={todo}>{todo}</li>)}
+      </ul>
+      <input type="text" value={this.state.text} onChange={this.write}/>
+      <button onClick={this.add}>add</button>
+    </div>;
   }
 });
-
-algo.store.attachReduxDevToolsChromeExtension();
-
-export const Todos = algo.nawt({
-  state: { text: '' },
-  countRender: true,
-  selector: computed({
-    todos: ({ store: { todos } }) => todos,
-    text: ({ state: { text } }) => text
-  }, ({ todos, text }) => {
-    return { todos, push: () => algo.actions.push(text) };
-  }),
-  component: ({ algo: { todos, push }, state: { text }, setState }) => <div>
-    <ul>
-      {todos.map(todo=><li key={todo}>{todo}</li>)}
-    </ul>
-     <input type="text" value={text} onChange={(e: { target: { value: string }}) => setState({ text: String(e.target.value) })}/>
-    <input type="button" value="add" onClick={push}/>
-  </div>
-});
-
-const inc = () => algo.actions.inc();
-
-export const Publish = () => <button onClick={inc}>store.publish()</button>;
 
 ReactDOM.render(
   <div>
     <Todos/>
-    <Publish/>
+    <Counter base={3}/>
   </div>,
   document.getElementById('root')
 );

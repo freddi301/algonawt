@@ -30,14 +30,7 @@
     ]
   ],
   "plugins": [
-    [
-      "transform-runtime",
-      {
-        "helpers": true,
-        "polyfill": true,
-        "regenerator": true
-      }
-    ],
+    "transform-runtime",
     "transform-flow-strip-types",
     "babel-plugin-transform-class-properties",
     "transform-object-rest-spread",
