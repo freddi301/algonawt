@@ -10,6 +10,9 @@ ORIGIN=$(git config --get remote.origin.url)
 
 mkdir -p doc-building
 cd doc-building
+rm -rf src/*
+rm -rf test/*
+rm -rf lib/*
 git init
 git remote add origin $ORIGIN || true
 mkdir -p doc-building

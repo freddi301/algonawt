@@ -15,16 +15,15 @@ function toLocalStorage(state) {
   localStorage.setItem('store', JSON.stringify(state));
 }
 
-const store = new Store(fromLocalStorage() || {
+const store = new Store(createReducer({
+  add: todo => s => ({ ...s, todos: s.todos.concat(todo) }),
+  remove: index => s => ({ ...s, todos: s.todos.slice(0, index).concat(s.todos.slice(index + 1)) }),
+  inc: n => s => ({ ...s, counter: s.counter + n })
+})(fromLocalStorage() || {
   todos: ([]: Array<string>),
   counter: 0,
-}, createReducer({
-  add: s => todo => ({ ...s, todos: s.todos.concat(todo) }),
-  remove: s => index => ({ ...s, todos: s.todos.slice(0, index).concat(s.todos.slice(index + 1)) }),
-  inc: s => n => ({ ...s, counter: s.counter + n })
-}, {
-  afterAction: ({ state }) => toLocalStorage(state)
 }));
+store.subscribe(toLocalStorage);
 
 const inc = base => () => store.publish(r => r.inc(base));
 export const Counter = store.functional(({ counter }) =>

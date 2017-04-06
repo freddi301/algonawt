@@ -7,8 +7,8 @@ import { functional, classy } from './component';
 export class Store<State, Reducers, Boxed: BoxedReducer<State, Reducers>> {
   reducer: Boxed;
   listeners: Set<(store: State) => mixed> = new Set;
-  constructor(state: State, reducer: (s: State) => Boxed) {
-    this.reducer = reducer(state);
+  constructor(reducer: Boxed) {
+    this.reducer = reducer;
   }
   publish: (f: (r: Boxed) => Boxed) => Boxed = f => {
     this.reducer = f(this.reducer);
